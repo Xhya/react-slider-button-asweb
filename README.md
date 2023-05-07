@@ -1,1 +1,6 @@
-# react-slider-button-asweb
+# Installation
+
+`npm install react-slider-button-asweb`
+
+# Usage example
+
