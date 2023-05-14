@@ -5,7 +5,7 @@ import {
   getElementLeftPositionOnScreen,
   getElementRightPositionOnScreen,
 } from "./slider.utils";
-import neonImage from "./neon.jpg";
+const neonImage =  require("./neon.jpg");
 
 interface SliderState {
   content: String;
