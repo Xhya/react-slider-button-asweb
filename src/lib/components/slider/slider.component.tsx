@@ -9,7 +9,7 @@ import {
 interface SliderState {
   content: String;
   contentAfterSlide: String;
-  imageSrc?: string;
+  imageSrc: string;
   onSlide: () => void;
 }
 
@@ -190,8 +190,8 @@ export default function Slider({
       >
         <img
           className="butt-wrapper"
-          src={imageSrc}
-          alt={!imageSrc ? "Image must be set" : "slider"}
+          src="../../assets/neon.jpg"
+          alt={"slider"}
           width={150}
           height={100}
         />
