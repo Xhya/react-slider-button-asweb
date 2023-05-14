@@ -2,7 +2,11 @@
 
 `npm install react-slider-button-asweb`
 
-# Usage example
+# Example
+
+![image](slider.gif)
+
+# Usage
 
 ```
 import React from "react";
@@ -24,4 +28,3 @@ export default function Page() {
   );
 }
 ```
-![](image.png)
