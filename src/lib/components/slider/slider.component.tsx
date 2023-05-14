@@ -35,13 +35,22 @@ export default function Slider({
     setIsDragStarted(true);
   }
 
+  function onMouseDragStart(event: any) {
+    if (!isDragStarted) {
+      event.preventDefault()
+      const mousePosition = event.pageX;
+      setMouseInitialPosition(mousePosition);
+      setIsDragStarted(true);
+    }
+  }
+
   function onDragEnd() {
     setIsDragStarted(false);
     setDragHorizontalPosition(0);
   }
 
   const handleWindowTouchMove = useCallback(
-    (event: any) => {
+    (event: TouchEvent) => {
       const touch = event.touches[0] || event.changedTouches[0];
 
       let sliderRightPosition = getElementRightPositionOnScreen(
@@ -91,6 +100,55 @@ export default function Slider({
     [mouseInitialPosition, onSlide]
   );
 
+  const handleWindowMouseMove = useCallback(
+    (event: MouseEvent) => {
+      let sliderRightPosition = getElementRightPositionOnScreen(
+        sliderRef.current
+      );
+      let sliderLeftPosition = getElementLeftPositionOnScreen(
+        sliderRef.current
+      );
+      let pictureRightPosition = getElementRightPositionOnScreen(
+        pictureRef.current
+      );
+      let pictureLeftPosition = getElementLeftPositionOnScreen(
+        pictureRef.current
+      );
+
+      const isLimitedByLeft = () => {
+        if (event.clientX > mouseInitialPosition) {
+          return false;
+        }
+
+        if (
+          event.clientX > sliderLeftPosition &&
+          pictureLeftPosition < sliderLeftPosition
+        ) {
+          return true;
+        }
+
+        if (pictureLeftPosition < sliderLeftPosition) {
+          return true;
+        }
+
+        return false;
+      };
+
+      if (pictureRightPosition > sliderRightPosition) {
+        setTimeout(() => {
+          onSlide();
+        }, 500);
+      }
+
+      if (isLimitedByLeft()) {
+        setDragHorizontalPosition(-1);
+      } else if (pictureRightPosition < sliderRightPosition) {
+        setDragHorizontalPosition(event.clientX - mouseInitialPosition);
+      }
+    },
+    [mouseInitialPosition, onSlide]
+  );
+
   useEffect(() => {
     if (isDragStarted && dragHorizontalPosition > 100) {
       setIsSecondDisplayed(true);
@@ -100,10 +158,17 @@ export default function Slider({
 
     if (isDragStarted) {
       window.addEventListener("touchmove", handleWindowTouchMove);
+      window.addEventListener("mousemove", handleWindowMouseMove);
     } else {
       window.removeEventListener("touchmove", handleWindowTouchMove);
+      window.removeEventListener("mousemove", handleWindowMouseMove);
     }
-  }, [isDragStarted, handleWindowTouchMove, dragHorizontalPosition]);
+  }, [
+    isDragStarted,
+    handleWindowTouchMove,
+    handleWindowMouseMove,
+    dragHorizontalPosition,
+  ]);
 
   return (
     <div ref={sliderRef} className="bottom-slider">
@@ -116,6 +181,8 @@ export default function Slider({
       <div
         onTouchStart={onDragStart}
         onTouchEnd={onDragEnd}
+        onMouseDown={onMouseDragStart}
+        onMouseUp={onDragEnd}
         ref={pictureRef}
         className="first-display"
         style={{
