@@ -4,7 +4,7 @@
 
 # Example
 
-![image](slider.gif)
+![image](https://github.com/Xhya/react-slider-button-asweb/blob/main/slider.gif?raw=true)
 
 # Usage
 
