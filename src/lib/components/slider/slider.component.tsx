@@ -5,7 +5,6 @@ import {
   getElementLeftPositionOnScreen,
   getElementRightPositionOnScreen,
 } from "./slider.utils";
-const neonImage =  require("./neon.jpg");
 
 interface SliderState {
   content: String;
@@ -191,8 +190,8 @@ export default function Slider({
       >
         <img
           className="butt-wrapper"
-          src={imageSrc ?? neonImage}
-          alt="slider"
+          src={imageSrc}
+          alt={!imageSrc ? "Image must be set" : "slider"}
           width={150}
           height={100}
         />
