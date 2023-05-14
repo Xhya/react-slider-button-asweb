@@ -5,14 +5,21 @@ import {
   getElementLeftPositionOnScreen,
   getElementRightPositionOnScreen,
 } from "./slider.utils";
+import neonImage from "./neon.jpg";
 
 interface SliderState {
   content: String;
-  image: string;
+  contentAfterSlide: String;
+  imageSrc?: string;
   onSlide: () => void;
 }
 
-export default function Slider({ content, image, onSlide }: SliderState) {
+export default function Slider({
+  content,
+  contentAfterSlide,
+  imageSrc,
+  onSlide,
+}: SliderState) {
   const sliderRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const pictureRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -102,7 +109,7 @@ export default function Slider({ content, image, onSlide }: SliderState) {
     <div ref={sliderRef} className="bottom-slider">
       {isSecondDisplayed && (
         <div className="second-display">
-          <p>Have a great day !</p>
+          <p>{contentAfterSlide}</p>
         </div>
       )}
 
@@ -115,11 +122,17 @@ export default function Slider({ content, image, onSlide }: SliderState) {
           left: dragHorizontalPosition,
         }}
       >
-        <img className="butt-wrapper" src={image} width={150} height={100} />
+        <img
+          className="butt-wrapper"
+          src={imageSrc ?? neonImage}
+          alt="slider"
+          width={150}
+          height={100}
+        />
       </div>
       {!isSecondDisplayed && (
         <div className="content">
-          <p>Slide to discover</p>
+          <p>{content}</p>
         </div>
       )}
     </div>
